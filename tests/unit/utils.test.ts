@@ -112,6 +112,64 @@ describe('getCategories()', () => {
   });
 });
 
+// Guide group icons — must stay in sync with src/lib/utils.ts
+const groupIcons: Record<string, string> = {
+  wellbeing: '🧘',
+  spaces: '💡',
+  lifestyle: '🌿',
+  safety: '🛡️',
+  style: '✨',
+  reference: '📖',
+};
+
+const groupLabels: Record<string, string> = {
+  wellbeing: 'Wellbeing',
+  spaces: 'Spaces & Light',
+  lifestyle: 'Lifestyle',
+  safety: 'Kids & Pets',
+  style: 'Style & Gifting',
+  reference: 'Learn More',
+};
+
+function getGroupIcon(group?: string): string {
+  return (group && groupIcons[group]) ?? '📗';
+}
+
+describe('getGroupIcon()', () => {
+  it('returns icon for valid group', () => {
+    expect(getGroupIcon('wellbeing')).toBe('🧘');
+    expect(getGroupIcon('spaces')).toBe('💡');
+    expect(getGroupIcon('lifestyle')).toBe('🌿');
+    expect(getGroupIcon('safety')).toBe('🛡️');
+    expect(getGroupIcon('style')).toBe('✨');
+    expect(getGroupIcon('reference')).toBe('📖');
+  });
+
+  it('returns default icon for unknown group', () => {
+    expect(getGroupIcon('unknown')).toBe('📗');
+  });
+
+  it('returns default icon for undefined', () => {
+    expect(getGroupIcon(undefined)).toBe('📗');
+    expect(getGroupIcon()).toBe('📗');
+  });
+});
+
+describe('groupLabels', () => {
+  it('has labels for all 6 groups', () => {
+    expect(Object.keys(groupLabels)).toHaveLength(6);
+  });
+
+  it('maps to correct display names', () => {
+    expect(groupLabels['wellbeing']).toBe('Wellbeing');
+    expect(groupLabels['spaces']).toBe('Spaces & Light');
+    expect(groupLabels['lifestyle']).toBe('Lifestyle');
+    expect(groupLabels['safety']).toBe('Kids & Pets');
+    expect(groupLabels['style']).toBe('Style & Gifting');
+    expect(groupLabels['reference']).toBe('Learn More');
+  });
+});
+
 describe('capitalize()', () => {
   it('capitalizes first letter', () => {
     expect(capitalize('hello')).toBe('Hello');

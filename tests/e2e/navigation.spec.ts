@@ -20,7 +20,7 @@ test.describe('Navigation', () => {
 
   test('guides page loads', async ({ page }) => {
     await page.goto('/planted/guides/');
-    await expect(page.locator('h1')).toHaveText('Guides');
+    await expect(page.locator('h1')).toHaveText('I Need a Plant For...');
   });
 
   test('about page loads', async ({ page }) => {
@@ -34,7 +34,7 @@ test.describe('Navigation', () => {
     const nav = page.locator('nav[aria-label="Main navigation"]');
     await expect(nav.getByText('Plants')).toBeVisible();
     await expect(nav.getByText('Categories')).toBeVisible();
-    await expect(nav.getByText('Guides')).toBeVisible();
+    await expect(nav.getByText('I Need a Plant For...')).toBeVisible();
     await expect(nav.getByText('About')).toBeVisible();
   });
 

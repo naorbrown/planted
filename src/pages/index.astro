@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentCard from '../components/ui/ContentCard.astro';
-import { getCategories, getGroupIcon, url } from '../lib/utils';
+import { getCategories, getGroupIcon, groupLabels, url } from '../lib/utils';
 import { getCollection } from 'astro:content';
 
 const categories = getCategories();
@@ -27,14 +27,14 @@ const useCaseGuides = allGuides
           <span class="text-5xl">🌱</span>
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark-text leading-[1.15]">
-          The right plant for <span class="text-leaf-light">what you need</span>
+          The right plant for <span class="text-leaf-light">every room, every situation</span>
         </h1>
         <p class="text-lg sm:text-xl text-dark-text/70 mt-5 max-w-2xl mx-auto leading-relaxed">
-          Better sleep, cleaner air, a thriving kitchen herb garden. Tell us what you want to achieve and we'll match you with the right plants.
+          Bedroom, office, kitchen, nursery &mdash; tell us what you're working with and we'll match you with plants that actually thrive there.
         </p>
         <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
           <a href={url('/guides/')} class="inline-flex items-center px-6 py-3 bg-leaf text-white rounded-xl font-medium text-sm no-underline hover:bg-leaf-dark shadow-sm hover:shadow-md transition-all">
-            Find by Goal
+            I Need a Plant For...
           </a>
           <a href={url('/plants/')} class="inline-flex items-center px-6 py-3 bg-dark-surface text-dark-text rounded-xl font-medium text-sm no-underline shadow-[var(--shadow-card)] hover:bg-dark-elevated transition-all">
             Browse All Plants
@@ -52,15 +52,15 @@ const useCaseGuides = allGuides
         <div class="w-14 h-14 mx-auto rounded-2xl bg-leaf/10 flex items-center justify-center mb-4">
           <span class="text-2xl">🎯</span>
         </div>
-        <h3 class="font-medium text-dark-text mb-1">Start with your goal</h3>
-        <p class="text-sm text-dark-text/60">Better sleep? Cleaner air? Herbs for cooking? Start with what you need.</p>
+        <h3 class="font-medium text-dark-text mb-1">Start with your situation</h3>
+        <p class="text-sm text-dark-text/60">Better sleep? Cleaner air? Herbs for cooking? Pick what you're working with.</p>
       </div>
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-sunlight/10 flex items-center justify-center mb-4">
           <span class="text-2xl">🌱</span>
         </div>
         <h3 class="font-medium text-dark-text mb-1">Get matched</h3>
-        <p class="text-sm text-dark-text/60">Each guide recommends specific plants with care details and safety info.</p>
+        <p class="text-sm text-dark-text/60">Each pick recommends specific plants with care details and safety info.</p>
       </div>
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-terracotta/10 flex items-center justify-center mb-4">
@@ -114,8 +114,8 @@ const useCaseGuides = allGuides
   {useCaseGuides.length > 0 && (
     <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl sm:text-3xl font-bold text-dark-text">What do you need?</h2>
-        <a href={url('/guides/')} class="text-sm font-medium text-leaf-light no-underline hover:text-leaf transition-colors">All guides &rarr;</a>
+        <h2 class="text-2xl sm:text-3xl font-bold text-dark-text">I Need a Plant For...</h2>
+        <a href={url('/guides/')} class="text-sm font-medium text-leaf-light no-underline hover:text-leaf transition-colors">All picks &rarr;</a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {useCaseGuides.map((guide) => (
@@ -129,7 +129,7 @@ const useCaseGuides = allGuides
               </p>
               <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
                 <span>{getGroupIcon(guide.data.group)}</span>
-                <span>{guide.data.group === 'health' ? 'Health & Wellness' : guide.data.group === 'life' ? 'Life Situations' : guide.data.group === 'practical' ? 'Practical Goals' : 'Guide'}</span>
+                <span>{groupLabels[guide.data.group ?? ''] ?? 'Guide'}</span>
               </div>
             </div>
           </a>

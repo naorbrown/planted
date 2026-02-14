@@ -62,7 +62,7 @@ const guides = defineCollection({
     title: z.string().max(100),
     description: z.string().max(200),
     category: categoryEnum.optional(),
-    group: z.enum(['health', 'life', 'practical', 'reference']).optional(),
+    group: z.enum(['wellbeing', 'spaces', 'lifestyle', 'safety', 'style', 'reference']).optional(),
     tags: z.array(z.string()).default([]),
     relatedPlants: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
