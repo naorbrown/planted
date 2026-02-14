@@ -1,6 +1,9 @@
 ---
 import PageLayout from './PageLayout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import RelatedContent from '../components/ui/RelatedContent.astro';
+import { url } from '../lib/utils';
+import { getCollection } from 'astro:content';
 
 interface Props {
   guide: {
@@ -8,18 +11,33 @@ interface Props {
     data: {
       title: string;
       description: string;
+      relatedPlants?: string[];
     };
   };
 }
 
 const { guide } = Astro.props;
-const { title, description } = guide.data;
+const { title, description, relatedPlants = [] } = guide.data;
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
   { label: 'Guides', href: '/guides/' },
   { label: title },
 ];
+
+// Resolve relatedPlants slugs to actual plant data
+const allPlants = await getCollection('plants', ({ data }) => !data.draft);
+const relatedItems = relatedPlants
+  .map((slug) => allPlants.find((p) => p.id === slug))
+  .filter(Boolean)
+  .map((plant) => ({
+    href: url(`/plants/${plant!.id}/`),
+    title: plant!.data.title,
+    description: plant!.data.description,
+    category: plant!.data.category,
+    petSafe: plant!.data.petSafe,
+    difficulty: plant!.data.difficulty,
+  }));
 ---
 
 <PageLayout title={title} description={description}>
@@ -34,5 +52,9 @@ const breadcrumbs = [
     <div class="prose prose-invert max-w-none">
       <slot />
     </div>
+
+    {relatedItems.length > 0 && (
+      <RelatedContent items={relatedItems} title="Plants in This Guide" />
+    )}
   </article>
 </PageLayout>

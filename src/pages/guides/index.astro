@@ -1,32 +1,95 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import ContentCard from '../../components/ui/ContentCard.astro';
-import { url } from '../../lib/utils';
+import { url, getGroupIcon } from '../../lib/utils';
 import { getCollection } from 'astro:content';
 
 const allGuides = await getCollection('guides', ({ data }) => !data.draft);
-const sorted = allGuides.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const groupLabels: Record<string, string> = {
+  health: 'Health & Wellness',
+  life: 'Life Situations',
+  practical: 'Practical Goals',
+  reference: 'Reference Guides',
+};
+
+const groupOrder = ['health', 'life', 'practical', 'reference'];
+
+// Separate grouped guides from ungrouped (legacy) guides
+const grouped = new Map<string, typeof allGuides>();
+const ungrouped: typeof allGuides = [];
+
+for (const guide of allGuides) {
+  const group = guide.data.group;
+  if (group) {
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group)!.push(guide);
+  } else {
+    ungrouped.push(guide);
+  }
+}
+
+// Sort within each group
+for (const [, guides] of grouped) {
+  guides.sort((a, b) => a.data.title.localeCompare(b.data.title));
+}
+ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
-<PageLayout title="Guides" description="In-depth guides on indoor gardening — from beginner basics to building living walls.">
+<PageLayout title="Guides" description="Find the right plants for what you need — sleep, air quality, pets, kids, dark rooms, and more.">
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-2">Guides</h1>
-    <p class="text-dark-text/60 mb-8">In-depth articles to help you grow with confidence.</p>
+    <p class="text-dark-text/60 mb-10">Start with what you need. Each guide recommends specific plants and explains why.</p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {sorted.map((guide) => (
-        <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
-          <div class="p-4 sm:p-5">
-            <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
-              {guide.data.title}
-            </h3>
-            <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
-              {guide.data.description}
-            </p>
-            <p class="text-xs text-dark-text/40 mt-3 uppercase tracking-wider">Guide</p>
+    {groupOrder.map((groupKey) => {
+      const guides = grouped.get(groupKey);
+      if (!guides || guides.length === 0) return null;
+      return (
+        <div class="mb-10">
+          <h2 class="text-lg font-semibold text-dark-text/80 mb-4"><span class="mr-2">{getGroupIcon(groupKey)}</span>{groupLabels[groupKey]}</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {guides.map((guide) => (
+              <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
+                <div class="p-4 sm:p-5">
+                  <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
+                    {guide.data.title}
+                  </h3>
+                  <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
+                    {guide.data.description}
+                  </p>
+                  <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
+                    <span>{getGroupIcon(groupKey)}</span>
+                    <span>{groupLabels[groupKey]}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
-        </a>
-      ))}
-    </div>
+        </div>
+      );
+    })}
+
+    {ungrouped.length > 0 && (
+      <div class="mb-10">
+        <h2 class="text-lg font-semibold text-dark-text/80 mb-4"><span class="mr-2">{getGroupIcon('reference')}</span>Reference</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ungrouped.map((guide) => (
+            <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
+              <div class="p-4 sm:p-5">
+                <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
+                  {guide.data.title}
+                </h3>
+                <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
+                  {guide.data.description}
+                </p>
+                <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
+                  <span>{getGroupIcon('reference')}</span>
+                  <span>Reference</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </section>
 </PageLayout>
