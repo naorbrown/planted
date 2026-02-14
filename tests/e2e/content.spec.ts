@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Content', () => {
   test('home page has hero section', async ({ page }) => {
     await page.goto('/planted/');
-    await expect(page.locator('h1')).toContainText('what you need');
+    await expect(page.locator('h1')).toContainText('every room, every situation');
   });
 
   test('home page has category grid', async ({ page }) => {
@@ -36,5 +36,28 @@ test.describe('Content', () => {
   test('guide detail page loads', async ({ page }) => {
     await page.goto('/planted/guides/beginners-guide-to-indoor-plants/');
     await expect(page.locator('h1')).toContainText('Beginner');
+  });
+
+  test('guides index has correct h1', async ({ page }) => {
+    await page.goto('/planted/guides/');
+    await expect(page.locator('h1')).toHaveText('I Need a Plant For...');
+  });
+
+  test('guides index has at least 20 guide cards', async ({ page }) => {
+    await page.goto('/planted/guides/');
+    const cards = page.locator('a[class*="rounded-xl"]');
+    await expect(cards).toHaveCount(await cards.count());
+    expect(await cards.count()).toBeGreaterThanOrEqual(20);
+  });
+
+  test('guides index has FAQ section with 5 questions', async ({ page }) => {
+    await page.goto('/planted/guides/');
+    const details = page.locator('details');
+    await expect(details).toHaveCount(5);
+  });
+
+  test('new guide page loads', async ({ page }) => {
+    await page.goto('/planted/guides/bathroom-plants/');
+    await expect(page.locator('h1')).toContainText('Bathroom');
   });
 });

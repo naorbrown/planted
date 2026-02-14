@@ -1,18 +1,11 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { url, getGroupIcon } from '../../lib/utils';
+import { url, getGroupIcon, groupLabels } from '../../lib/utils';
 import { getCollection } from 'astro:content';
 
 const allGuides = await getCollection('guides', ({ data }) => !data.draft);
 
-const groupLabels: Record<string, string> = {
-  health: 'Health & Wellness',
-  life: 'Life Situations',
-  practical: 'Practical Goals',
-  reference: 'Reference Guides',
-};
-
-const groupOrder = ['health', 'life', 'practical', 'reference'];
+const groupOrder = ['wellbeing', 'spaces', 'lifestyle', 'safety', 'style', 'reference'];
 
 // Separate grouped guides from ungrouped (legacy) guides
 const grouped = new Map<string, typeof allGuides>();
@@ -35,10 +28,10 @@ for (const [, guides] of grouped) {
 ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
-<PageLayout title="Guides" description="Find the right plants for what you need — sleep, air quality, pets, kids, dark rooms, and more.">
+<PageLayout title="I Need a Plant For..." description="Pick your situation. Each pick recommends specific plants and tells you exactly how to keep them alive.">
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-    <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-2">Guides</h1>
-    <p class="text-dark-text/60 mb-10">Start with what you need. Each guide recommends specific plants and explains why.</p>
+    <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-2">I Need a Plant For...</h1>
+    <p class="text-dark-text/60 mb-10">Pick your situation. Each pick recommends specific plants and tells you exactly how to keep them alive.</p>
 
     {groupOrder.map((groupKey) => {
       const guides = grouped.get(groupKey);
@@ -70,7 +63,7 @@ ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
     {ungrouped.length > 0 && (
       <div class="mb-10">
-        <h2 class="text-lg font-semibold text-dark-text/80 mb-4"><span class="mr-2">{getGroupIcon('reference')}</span>Reference</h2>
+        <h2 class="text-lg font-semibold text-dark-text/80 mb-4"><span class="mr-2">{getGroupIcon('reference')}</span>Learn More</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {ungrouped.map((guide) => (
             <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
@@ -83,7 +76,7 @@ ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
                 </p>
                 <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
                   <span>{getGroupIcon('reference')}</span>
-                  <span>Reference</span>
+                  <span>Learn More</span>
                 </div>
               </div>
             </a>
@@ -91,5 +84,51 @@ ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
         </div>
       </div>
     )}
+
+    <!-- Common Questions -->
+    <div class="mt-16 pt-10 border-t border-dark-surface/60">
+      <h2 class="text-xl font-semibold text-dark-text mb-6">Common Questions</h2>
+      <div class="space-y-3 max-w-3xl">
+        <details class="group rounded-xl bg-dark-surface/50 overflow-hidden">
+          <summary class="cursor-pointer px-5 py-4 text-sm font-medium text-dark-text flex items-center justify-between hover:bg-dark-surface/80 transition-colors">
+            How many plants do I actually need?
+            <span class="text-dark-text/30 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-dark-text/60 leading-relaxed">One or two per room is a great start. The NASA study that recommended 15&ndash;18 plants was for a sealed space station, not a normal apartment. In a real home with ventilation, two to three well-chosen plants per room will noticeably improve air quality and aesthetics without turning your living space into a jungle.</p>
+        </details>
+
+        <details class="group rounded-xl bg-dark-surface/50 overflow-hidden">
+          <summary class="cursor-pointer px-5 py-4 text-sm font-medium text-dark-text flex items-center justify-between hover:bg-dark-surface/80 transition-colors">
+            Can plants really purify air?
+            <span class="text-dark-text/30 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-dark-text/60 leading-relaxed">Yes, but context matters. NASA proved plants remove specific VOCs like formaldehyde and benzene in sealed chambers. In a ventilated home the effect is smaller but still measurable, especially for off-gassing from new furniture and paint. <a href={url('/guides/science-of-clean-air-plants/')} class="text-leaf-light no-underline hover:text-leaf">Read the full breakdown &rarr;</a></p>
+        </details>
+
+        <details class="group rounded-xl bg-dark-surface/50 overflow-hidden">
+          <summary class="cursor-pointer px-5 py-4 text-sm font-medium text-dark-text flex items-center justify-between hover:bg-dark-surface/80 transition-colors">
+            Which plants are truly impossible to kill?
+            <span class="text-dark-text/30 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-dark-text/60 leading-relaxed">ZZ plant, snake plant, and pothos top every "unkillable" list for good reason. They tolerate low light, infrequent watering, and general neglect. If you've killed plants before, start with one of these. <a href={url('/guides/plants-for-people-who-kill-plants/')} class="text-leaf-light no-underline hover:text-leaf">See our full unkillable picks &rarr;</a></p>
+        </details>
+
+        <details class="group rounded-xl bg-dark-surface/50 overflow-hidden">
+          <summary class="cursor-pointer px-5 py-4 text-sm font-medium text-dark-text flex items-center justify-between hover:bg-dark-surface/80 transition-colors">
+            Are any common houseplants dangerous to pets?
+            <span class="text-dark-text/30 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-dark-text/60 leading-relaxed">Yes. Lilies, pothos, philodendron, and dieffenbachia are among the most common toxic houseplants. Cats are especially vulnerable to lilies, which can cause kidney failure. Always check before buying. <a href={url('/guides/pet-safe-plant-guide/')} class="text-leaf-light no-underline hover:text-leaf">See our full pet safety guide &rarr;</a></p>
+        </details>
+
+        <details class="group rounded-xl bg-dark-surface/50 overflow-hidden">
+          <summary class="cursor-pointer px-5 py-4 text-sm font-medium text-dark-text flex items-center justify-between hover:bg-dark-surface/80 transition-colors">
+            I have zero natural light. Can I still have plants?
+            <span class="text-dark-text/30 group-open:rotate-45 transition-transform text-lg leading-none">+</span>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-dark-text/60 leading-relaxed">Absolutely. ZZ plant, cast iron plant, and pothos genuinely thrive in low light. They evolved on tropical forest floors where almost no direct sunlight reaches. A north-facing window or even bright artificial light is enough. <a href={url('/guides/plants-for-dark-rooms/')} class="text-leaf-light no-underline hover:text-leaf">See all our low-light picks &rarr;</a></p>
+        </details>
+      </div>
+    </div>
   </section>
 </PageLayout>

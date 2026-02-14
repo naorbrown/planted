@@ -47,10 +47,21 @@ export function getCategories(): Array<{ slug: string; name: string; description
  * Guide group icons — used on guide cards and section headers.
  */
 const groupIcons: Record<string, string> = {
-  health: '💚',
-  life: '🏠',
-  practical: '🎯',
+  wellbeing: '🧘',
+  spaces: '💡',
+  lifestyle: '🌿',
+  safety: '🛡️',
+  style: '✨',
   reference: '📖',
+};
+
+export const groupLabels: Record<string, string> = {
+  wellbeing: 'Wellbeing',
+  spaces: 'Spaces & Light',
+  lifestyle: 'Lifestyle',
+  safety: 'Kids & Pets',
+  style: 'Style & Gifting',
+  reference: 'Learn More',
 };
 
 /**
