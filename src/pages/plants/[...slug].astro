@@ -1,0 +1,19 @@
+---
+import PlantLayout from '../../layouts/PlantLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const plants = await getCollection('plants', ({ data }) => !data.draft);
+  return plants.map((plant) => ({
+    params: { slug: plant.id },
+    props: { plant },
+  }));
+}
+
+const { plant } = Astro.props;
+const { Content } = await render(plant);
+---
+
+<PlantLayout plant={plant}>
+  <Content />
+</PlantLayout>

@@ -1,0 +1,42 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+import { getCategories, url, categoryLabel, getCategoryIcon } from '../../lib/utils';
+import { getCollection } from 'astro:content';
+
+const categories = getCategories();
+const allPlants = await getCollection('plants', ({ data }) => !data.draft);
+const sorted = allPlants.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<PageLayout title="All Plants" description="Browse every plant in our collection — from bedroom lavender to kitchen herbs.">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-2">All Plants</h1>
+    <p class="text-dark-text/60 mb-8">Every plant in our collection, organized for easy browsing.</p>
+
+    <!-- Category filter strip -->
+    <div class="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
+      <a href={url('/plants/')} class="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium bg-leaf/20 text-leaf-light no-underline">
+        All
+      </a>
+      {categories.map((cat) => (
+        <a href={url(`/categories/${cat.slug}/`)} class="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-dark-text/60 no-underline hover:bg-dark-elevated hover:text-dark-text transition-all">
+          {cat.icon} {cat.name}
+        </a>
+      ))}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {sorted.map((plant) => (
+        <ContentCard
+          href={url(`/plants/${plant.id}/`)}
+          title={plant.data.title}
+          description={plant.data.description}
+          category={plant.data.category}
+          petSafe={plant.data.petSafe}
+          difficulty={plant.data.difficulty}
+        />
+      ))}
+    </div>
+  </section>
+</PageLayout>

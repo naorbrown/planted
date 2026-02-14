@@ -1,0 +1,154 @@
+---
+import PageLayout from './PageLayout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import CategoryIcon from '../components/ui/CategoryIcon.astro';
+import CareCard from '../components/plant/CareCard.astro';
+import BenefitsList from '../components/plant/BenefitsList.astro';
+import ToxicityBadge from '../components/plant/ToxicityBadge.astro';
+import HealthWisdom from '../components/plant/HealthWisdom.astro';
+import RelatedContent from '../components/ui/RelatedContent.astro';
+import { categoryLabel, url } from '../lib/utils';
+import { generatePlantSchema, generateBreadcrumbSchema } from '../lib/schema';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  plant: {
+    id: string;
+    data: {
+      title: string;
+      scientificName: string;
+      description: string;
+      category: string;
+      secondaryCategories: string[];
+      light: string;
+      water: string;
+      humidity: string;
+      temperature: string;
+      soil: string;
+      difficulty: string;
+      toxicity: string;
+      petSafe: boolean;
+      childSafe: boolean;
+      sizeAtMaturity: string;
+      matureHeight: string;
+      growthRate: string;
+      origin?: string;
+      benefits: string[];
+      nasaCleanAir: boolean;
+      healthWisdom?: {
+        tcm?: string;
+        ayurveda?: string;
+        modernScience?: string;
+        folklore?: string;
+      };
+    };
+  };
+}
+
+const { plant } = Astro.props;
+const { title, scientificName, description, category, difficulty, toxicity, petSafe, childSafe, light, water, humidity, temperature, sizeAtMaturity, matureHeight, growthRate, benefits, nasaCleanAir, healthWisdom } = plant.data;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: categoryLabel(category), href: `/categories/${category}/` },
+  { label: title },
+];
+
+const plantUrl = new URL(url(`/plants/${plant.id}/`), Astro.site).toString();
+
+const plantSchema = generatePlantSchema({
+  name: title,
+  scientificName,
+  description,
+  url: plantUrl,
+});
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: 'Home', url: new URL(url('/'), Astro.site).toString() },
+  { name: categoryLabel(category), url: new URL(url(`/categories/${category}/`), Astro.site).toString() },
+  { name: title, url: plantUrl },
+]);
+
+const difficultyDots = difficulty === 'advanced' ? 3 : difficulty === 'intermediate' ? 2 : 1;
+
+const allPlants = await getCollection('plants', ({ data }) => !data.draft && (data.category === category || data.secondaryCategories.includes(category as any)));
+const related = allPlants
+  .filter((p) => p.id !== plant.id)
+  .slice(0, 6)
+  .map((p) => ({
+    href: url(`/plants/${p.id}/`),
+    title: p.data.title,
+    description: p.data.description,
+    category: p.data.category,
+    petSafe: p.data.petSafe,
+    difficulty: p.data.difficulty,
+  }));
+---
+
+<PageLayout title={title} description={description}>
+  <article class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12" data-pagefind-body>
+    <script type="application/ld+json" set:html={JSON.stringify(plantSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    <Breadcrumb items={breadcrumbs} />
+
+    <div class="mt-4 mb-8">
+      <div class="flex items-center gap-2 mb-3">
+        <CategoryIcon slug={category} size="sm" class="text-leaf-light" />
+        <a href={url(`/categories/${category}/`)} class="text-xs font-semibold uppercase tracking-wider text-leaf-light no-underline hover:underline">
+          {categoryLabel(category)}
+        </a>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-1">
+        {title}
+      </h1>
+      <p class="text-base text-dark-text/50 italic mb-3">{scientificName}</p>
+      <p class="text-dark-text/70 mb-4">{description}</p>
+
+      <div class="flex flex-wrap items-center gap-4 text-sm text-dark-text/50">
+        <span class="flex items-center gap-1">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <span class={`w-2 h-2 rounded-full ${i < difficultyDots ? 'bg-dark-text/40' : 'bg-dark-text/15'}`} />
+          ))}
+          <span class="ml-1 capitalize">{difficulty}</span>
+        </span>
+        <ToxicityBadge toxicity={toxicity} petSafe={petSafe} childSafe={childSafe} />
+      </div>
+
+      <BenefitsList benefits={benefits} nasaCleanAir={nasaCleanAir} />
+    </div>
+
+    <div class="lg:grid lg:grid-cols-[1fr_280px] lg:gap-10">
+      <div class="min-w-0">
+        <div class="lg:hidden mb-8">
+          <div class="rounded-xl bg-dark-surface/50 p-5">
+            <CareCard
+              light={light} water={water} humidity={humidity} temperature={temperature}
+              difficulty={difficulty} toxicity={toxicity} petSafe={petSafe} childSafe={childSafe}
+              sizeAtMaturity={sizeAtMaturity} matureHeight={matureHeight} growthRate={growthRate}
+            />
+          </div>
+        </div>
+
+        <div class="prose prose-invert max-w-none">
+          <slot />
+        </div>
+
+        <HealthWisdom wisdom={healthWisdom} />
+      </div>
+
+      <aside class="hidden lg:block">
+        <div class="sticky top-24">
+          <div class="rounded-xl bg-dark-surface/50 p-5">
+            <CareCard
+              light={light} water={water} humidity={humidity} temperature={temperature}
+              difficulty={difficulty} toxicity={toxicity} petSafe={petSafe} childSafe={childSafe}
+              sizeAtMaturity={sizeAtMaturity} matureHeight={matureHeight} growthRate={growthRate}
+            />
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <RelatedContent items={related} title={`More ${categoryLabel(category)} plants`} />
+  </article>
+</PageLayout>

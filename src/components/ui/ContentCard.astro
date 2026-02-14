@@ -1,0 +1,46 @@
+---
+import { getCategoryIcon, categoryLabel } from '../../lib/utils';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  petSafe?: boolean;
+  difficulty?: string;
+}
+
+const { href, title, description, category, petSafe, difficulty } = Astro.props;
+const difficultyDots = difficulty === 'advanced' ? 3 : difficulty === 'intermediate' ? 2 : 1;
+---
+
+<a href={href} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
+  <div class="p-4 sm:p-5">
+    <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
+      {title}
+    </h3>
+    <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
+      {description}
+    </p>
+    <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
+      <span>{getCategoryIcon(category)}</span>
+      <span>{categoryLabel(category)}</span>
+      {difficulty && (
+        <>
+          <span class="text-dark-text/20">&middot;</span>
+          <span class="flex items-center gap-0.5">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <span class={`w-1.5 h-1.5 rounded-full ${i < difficultyDots ? 'bg-dark-text/40' : 'bg-dark-text/15'}`} />
+            ))}
+          </span>
+        </>
+      )}
+      {petSafe && (
+        <>
+          <span class="text-dark-text/20">&middot;</span>
+          <span title="Pet safe">🐾</span>
+        </>
+      )}
+    </div>
+  </div>
+</a>

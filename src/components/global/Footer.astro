@@ -1,0 +1,49 @@
+---
+import { getCategories, url } from '../../lib/utils';
+const categories = getCategories();
+---
+
+<footer class="bg-dark-surface/50 border-t border-dark-surface mt-auto">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+      <div>
+        <a href={url('/')} class="flex items-center gap-2 text-lg font-medium text-dark-text no-underline">
+          <span class="text-xl">🌱</span>
+          Planted
+        </a>
+        <p class="text-sm text-dark-text/50 mt-2 max-w-xs">
+          Find the perfect plant for any space. Bedroom, office, kitchen, and beyond.
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-dark-text/30 mb-3">Explore</p>
+        <ul class="space-y-2">
+          <li><a href={url('/plants/')} class="text-sm text-dark-text/60 no-underline hover:text-leaf-light transition-colors">All Plants</a></li>
+          <li><a href={url('/categories/')} class="text-sm text-dark-text/60 no-underline hover:text-leaf-light transition-colors">Categories</a></li>
+          <li><a href={url('/guides/')} class="text-sm text-dark-text/60 no-underline hover:text-leaf-light transition-colors">Guides</a></li>
+          <li><a href={url('/about/')} class="text-sm text-dark-text/60 no-underline hover:text-leaf-light transition-colors">About</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-dark-text/30 mb-3">Categories</p>
+        <ul class="space-y-2">
+          {categories.map((cat) => (
+            <li>
+              <a href={url(`/categories/${cat.slug}/`)} class="text-sm text-dark-text/60 no-underline hover:text-leaf-light transition-colors">
+                {cat.icon} {cat.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-dark-surface/60 text-center">
+      <p class="text-xs text-dark-text/30">
+        &copy; 2026 Planted. Grow where you are.
+      </p>
+    </div>
+  </div>
+</footer>

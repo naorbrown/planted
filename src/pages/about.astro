@@ -1,0 +1,49 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { url } from '../lib/utils';
+---
+
+<PageLayout title="About" description="Why Planted exists — bringing biophilic design to every space you live and work in.">
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-6">About Planted</h1>
+
+    <div class="prose prose-invert max-w-none">
+      <p>
+        We spend over 90% of our time indoors. The air we breathe, the spaces we work in, the rooms where our children sleep — these environments shape our health, mood, and productivity in ways we rarely think about.
+      </p>
+
+      <p>
+        Planted exists to change that. Inspired by places like Singapore's Changi Airport — where architecture and nature blend seamlessly — we believe every space can benefit from the right plant.
+      </p>
+
+      <h2>What makes us different</h2>
+
+      <p>
+        Most plant guides tell you what a plant needs. We tell you what a plant <em>does</em> — for your air, your sleep, your focus, your children's safety, and your wellbeing.
+      </p>
+
+      <p>
+        We draw from multiple knowledge traditions: NASA's Clean Air Study for air purification data, Traditional Chinese Medicine for understanding plant energetics, Ayurvedic wisdom for holistic wellness, and modern peer-reviewed research for evidence-based recommendations.
+      </p>
+
+      <h2>Our principles</h2>
+
+      <ul>
+        <li><strong>Accessible.</strong> Every plant we recommend is easy to find — at local nurseries, hardware stores, or from seed. No rare specimens that require specialist sourcing.</li>
+        <li><strong>Safe.</strong> Every plant is marked for pet and child toxicity. We always provide non-toxic alternatives.</li>
+        <li><strong>Complete.</strong> From pot selection to soil mix to maintenance schedules — everything you need from start to thriving plant.</li>
+        <li><strong>Honest.</strong> We note when the science is strong and when it's more traditional wisdom. You decide what matters to you.</li>
+      </ul>
+
+      <h2>Use-case driven</h2>
+
+      <p>
+        Plants are organized by where you want them, not by what they are. Looking for something for your bedroom that helps you sleep? Your home office that helps you focus? A kitchen herb that also repels insects? We start with the problem, then find the plant.
+      </p>
+
+      <p>
+        <a href={url('/plants/')}>Start browsing plants</a> or <a href={url('/categories/')}>explore by space</a>.
+      </p>
+    </div>
+  </article>
+</PageLayout>

@@ -1,0 +1,145 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentCard from '../components/ui/ContentCard.astro';
+import { getCategories, url } from '../lib/utils';
+import { getCollection } from 'astro:content';
+
+const categories = getCategories();
+const allPlants = await getCollection('plants', ({ data }) => !data.draft);
+const featuredPlants = allPlants.filter((p) => p.data.featured);
+const displayPlants = (featuredPlants.length >= 3 ? featuredPlants.slice(0, 6) : allPlants.slice(0, 6))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<PageLayout title="Planted" description="Find the perfect plant for any space — bedroom, office, kitchen, and beyond.">
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-leaf/8 via-dark-bg to-terracotta/5"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-24">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="flex justify-center mb-6">
+          <span class="text-5xl">🌿</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark-text leading-[1.15]">
+          The right plant for <span class="text-leaf-light">every space</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-dark-text/70 mt-5 max-w-2xl mx-auto leading-relaxed">
+          Bedroom, office, kitchen, kids room, and beyond. Find plants that thrive where you live, backed by science and world health traditions.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+          <a href={url('/plants/')} class="inline-flex items-center px-6 py-3 bg-leaf text-white rounded-xl font-medium text-sm no-underline hover:bg-leaf-dark shadow-sm hover:shadow-md transition-all">
+            Browse Plants
+          </a>
+          <a href={url('/categories/')} class="inline-flex items-center px-6 py-3 bg-dark-surface text-dark-text rounded-xl font-medium text-sm no-underline shadow-[var(--shadow-card)] hover:bg-dark-elevated transition-all">
+            Pick a Space
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-dark-text text-center mb-10">How it works</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-leaf/10 flex items-center justify-center mb-4">
+          <span class="text-2xl">🏠</span>
+        </div>
+        <h3 class="font-medium text-dark-text mb-1">Pick your space</h3>
+        <p class="text-sm text-dark-text/60">Bedroom? Office? Kitchen? Browse by where you want to grow.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-sunlight/10 flex items-center justify-center mb-4">
+          <span class="text-2xl">🌱</span>
+        </div>
+        <h3 class="font-medium text-dark-text mb-1">Find your plant</h3>
+        <p class="text-sm text-dark-text/60">Each guide covers care, setup, health benefits, and where to find seeds.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-terracotta/10 flex items-center justify-center mb-4">
+          <span class="text-2xl">🪴</span>
+        </div>
+        <h3 class="font-medium text-dark-text mb-1">Watch it grow</h3>
+        <p class="text-sm text-dark-text/60">Step-by-step setup and maintenance. From seed to thriving plant.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-dark-text text-center mb-8">Our Philosophy</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="flex items-start gap-3 p-4 rounded-xl bg-dark-surface/50">
+        <span class="text-xl flex-shrink-0 mt-0.5">🌍</span>
+        <div>
+          <h3 class="text-sm font-semibold text-dark-text">Accessible plants</h3>
+          <p class="text-xs text-dark-text/50 mt-0.5">Native, easy to find, and seeds you can get anywhere.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 rounded-xl bg-dark-surface/50">
+        <span class="text-xl flex-shrink-0 mt-0.5">🧪</span>
+        <div>
+          <h3 class="text-sm font-semibold text-dark-text">Science-backed</h3>
+          <p class="text-xs text-dark-text/50 mt-0.5">NASA research, TCM, Ayurveda, and modern studies.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 rounded-xl bg-dark-surface/50">
+        <span class="text-xl flex-shrink-0 mt-0.5">🐾</span>
+        <div>
+          <h3 class="text-sm font-semibold text-dark-text">Safety first</h3>
+          <p class="text-xs text-dark-text/50 mt-0.5">Every plant marked for pet and child toxicity. Non-toxic options for every use.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 rounded-xl bg-dark-surface/50">
+        <span class="text-xl flex-shrink-0 mt-0.5">🌱</span>
+        <div>
+          <h3 class="text-sm font-semibold text-dark-text">Start to finish</h3>
+          <p class="text-xs text-dark-text/50 mt-0.5">Pot selection, soil mix, placement, maintenance schedules, and troubleshooting.</p>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-6">
+      <a href={url('/about/')} class="text-sm text-leaf-light no-underline hover:text-leaf transition-colors">Read more about our approach &rarr;</a>
+    </p>
+  </section>
+
+  <!-- Browse by Category -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-dark-text text-center mb-10">Browse by Space</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {categories.map((cat) => (
+        <a
+          href={url(`/categories/${cat.slug}/`)}
+          class="group flex flex-col items-center text-center p-5 sm:p-6 rounded-xl bg-dark-surface hover:bg-dark-elevated shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] transition-all no-underline"
+        >
+          <span class="text-3xl mb-3">{cat.icon}</span>
+          <h3 class="text-sm sm:text-base font-medium text-dark-text group-hover:text-leaf-light transition-colors">{cat.name}</h3>
+          <p class="text-xs text-dark-text/50 mt-1 line-clamp-2 hidden sm:block">{cat.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Plants -->
+  {displayPlants.length > 0 && (
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-dark-text">Popular Plants</h2>
+        <a href={url('/plants/')} class="text-sm font-medium text-leaf-light no-underline hover:text-leaf transition-colors">View all &rarr;</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {displayPlants.map((plant) => (
+          <ContentCard
+            href={url(`/plants/${plant.id}/`)}
+            title={plant.data.title}
+            description={plant.data.description}
+            category={plant.data.category}
+            petSafe={plant.data.petSafe}
+            difficulty={plant.data.difficulty}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+</PageLayout>

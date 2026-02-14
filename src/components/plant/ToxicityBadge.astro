@@ -1,0 +1,18 @@
+---
+interface Props {
+  toxicity: string;
+  petSafe: boolean;
+  childSafe: boolean;
+}
+
+const { toxicity, petSafe, childSafe } = Astro.props;
+
+const color = toxicity === 'non-toxic' ? 'text-safe' : toxicity === 'mildly-toxic' ? 'text-caution' : 'text-danger';
+const label = toxicity === 'non-toxic' ? 'Non-toxic' : toxicity === 'mildly-toxic' ? 'Mildly toxic' : 'Toxic';
+---
+
+<span class="inline-flex items-center gap-1.5 text-xs">
+  <span class={color}>{toxicity === 'non-toxic' ? '✓' : '⚠'} {label}</span>
+  {petSafe && <span title="Pet safe">🐾</span>}
+  {childSafe && <span title="Child safe">👶</span>}
+</span>

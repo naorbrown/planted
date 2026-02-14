@@ -1,0 +1,47 @@
+- slug: bedroom
+  name: Bedroom & Sleep
+  description: Plants that purify air, promote calm, and improve sleep quality
+  icon: "\U0001F319"
+  order: 1
+
+- slug: home-office
+  name: Home Office
+  description: Focus-enhancing, screen-fatigue-reducing, desk-friendly plants
+  icon: "\U0001F4BB"
+  order: 2
+
+- slug: kitchen-herbs
+  name: Kitchen & Herbs
+  description: Culinary herbs, antimicrobial plants, and natural pest deterrents
+  icon: "\U0001F33F"
+  order: 3
+
+- slug: living-room
+  name: Living Room
+  description: Statement plants, conversation pieces, and air purifiers
+  icon: "\U0001FAB4"
+  order: 4
+
+- slug: kids-baby
+  name: Kids & Baby
+  description: Non-toxic, educational, and safe plants for children and nurseries
+  icon: "\U0001F476"
+  order: 5
+
+- slug: air-wellness
+  name: Air & Wellness
+  description: NASA-studied air purifiers, stress relief, and medicinal plants
+  icon: "\U0001F32C"
+  order: 6
+
+- slug: pet-safe
+  name: Pet Safe
+  description: Verified non-toxic plants for homes with cats and dogs
+  icon: "\U0001F43E"
+  order: 7
+
+- slug: low-maintenance
+  name: Low Maintenance
+  description: Drought-tolerant, forgetful-waterer-proof, near-indestructible plants
+  icon: "\U0001F9D8"
+  order: 8

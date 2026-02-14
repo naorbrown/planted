@@ -1,0 +1,32 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+import { url } from '../../lib/utils';
+import { getCollection } from 'astro:content';
+
+const allGuides = await getCollection('guides', ({ data }) => !data.draft);
+const sorted = allGuides.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<PageLayout title="Guides" description="In-depth guides on indoor gardening — from beginner basics to building living walls.">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-2">Guides</h1>
+    <p class="text-dark-text/60 mb-8">In-depth articles to help you grow with confidence.</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {sorted.map((guide) => (
+        <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
+          <div class="p-4 sm:p-5">
+            <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
+              {guide.data.title}
+            </h3>
+            <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
+              {guide.data.description}
+            </p>
+            <p class="text-xs text-dark-text/40 mt-3 uppercase tracking-wider">Guide</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</PageLayout>

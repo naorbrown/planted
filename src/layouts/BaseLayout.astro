@@ -1,0 +1,23 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Find the perfect plant for any space — bedroom, office, kitchen, and beyond.' } = Astro.props;
+import { url } from '../lib/utils';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <title>{title} — Planted</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-dark-bg text-dark-text">
+    <slot />
+  </body>
+</html>

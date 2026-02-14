@@ -1,0 +1,21 @@
+---
+interface Props {
+  benefits: string[];
+  nasaCleanAir?: boolean;
+}
+
+const { benefits, nasaCleanAir } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2 mt-3">
+  {nasaCleanAir && (
+    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-water/10 text-water-light">
+      🛰️ NASA Clean Air
+    </span>
+  )}
+  {benefits.map((benefit) => (
+    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs bg-dark-elevated/60 text-dark-text/60">
+      {benefit}
+    </span>
+  ))}
+</div>

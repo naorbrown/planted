@@ -1,0 +1,67 @@
+---
+import { getCategories, url } from '../../lib/utils';
+const categories = getCategories();
+---
+
+<dialog id="mobile-menu" class="mobile-menu fixed inset-0 w-full h-full max-w-none max-h-none m-0 p-0 bg-transparent">
+  <div class="fixed inset-y-0 left-0 w-[85vw] max-w-xs bg-dark-bg shadow-xl overflow-y-auto">
+    <div class="flex items-center justify-between px-5 h-16 border-b border-dark-surface">
+      <a href={url('/')} class="flex items-center gap-2 text-lg font-medium text-dark-text no-underline">
+        <span class="text-xl">🌱</span>
+        Planted
+      </a>
+      <button id="mobile-menu-close" type="button" class="p-2 -mr-2 rounded-lg text-dark-text/70 hover:bg-dark-surface transition-colors" aria-label="Close menu">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="px-5 py-4">
+      <ul class="space-y-1">
+        <li>
+          <a href={url('/plants/')} class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-text no-underline hover:bg-dark-surface transition-colors">
+            Plants
+          </a>
+        </li>
+        <li>
+          <a href={url('/categories/')} class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-text no-underline hover:bg-dark-surface transition-colors">
+            Categories
+          </a>
+        </li>
+        <li>
+          <a href={url('/guides/')} class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-text no-underline hover:bg-dark-surface transition-colors">
+            Guides
+          </a>
+        </li>
+        <li>
+          <a href={url('/about/')} class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-dark-text no-underline hover:bg-dark-surface transition-colors">
+            About
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="px-5 py-2">
+      <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-dark-text/30 mb-2">Categories</p>
+      <ul class="space-y-0.5">
+        {categories.map((cat) => (
+          <li>
+            <a href={url(`/categories/${cat.slug}/`)} class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-dark-text/70 no-underline hover:bg-dark-surface transition-colors">
+              <span class="text-base">{cat.icon}</span>
+              <span>{cat.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</dialog>
+
+<script type="module">
+  const e = document.getElementById('mobile-menu');
+  const o = document.getElementById('mobile-menu-close');
+  o?.addEventListener('click', () => e?.close());
+  e?.addEventListener('click', (n) => { if (n.target === e) e.close(); });
+  window.__openMobileMenu = () => e?.showModal();
+</script>

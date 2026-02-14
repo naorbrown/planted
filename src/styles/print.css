@@ -1,0 +1,13 @@
+@media print {
+  header, footer, dialog, .search-trigger, .mobile-menu-trigger {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+}

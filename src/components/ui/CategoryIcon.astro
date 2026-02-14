@@ -1,0 +1,15 @@
+---
+import { getCategoryIcon } from '../../lib/utils';
+
+interface Props {
+  slug: string;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { slug, size = 'md', class: className = '' } = Astro.props;
+const icon = getCategoryIcon(slug);
+const sizeClass = size === 'sm' ? 'text-base' : size === 'lg' ? 'text-3xl' : 'text-xl';
+---
+
+<span class={`${sizeClass} ${className}`} role="img" aria-label={slug}>{icon}</span>

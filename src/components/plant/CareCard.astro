@@ -1,0 +1,120 @@
+---
+import { formatLight, formatWater } from '../../lib/utils';
+
+interface Props {
+  light: string;
+  water: string;
+  humidity: string;
+  temperature: string;
+  difficulty: string;
+  toxicity: string;
+  petSafe: boolean;
+  childSafe: boolean;
+  sizeAtMaturity: string;
+  matureHeight: string;
+  growthRate: string;
+}
+
+const { light, water, humidity, temperature, difficulty, toxicity, petSafe, childSafe, sizeAtMaturity, matureHeight, growthRate } = Astro.props;
+
+const lightLevels: Record<string, number> = { 'low': 1, 'low-medium': 2, 'medium': 3, 'bright-indirect': 4, 'direct': 5 };
+const waterLevels: Record<string, number> = { 'minimal': 1, 'low': 2, 'moderate': 3, 'regular': 4, 'frequent': 5 };
+const lightLevel = lightLevels[light] ?? 3;
+const waterLevel = waterLevels[water] ?? 3;
+
+const toxicityColor = toxicity === 'non-toxic' ? 'text-safe' : toxicity === 'mildly-toxic' ? 'text-caution' : 'text-danger';
+const toxicityBg = toxicity === 'non-toxic' ? 'bg-safe/10' : toxicity === 'mildly-toxic' ? 'bg-caution/10' : 'bg-danger/10';
+const toxicityLabel = toxicity === 'non-toxic' ? 'Non-toxic' : toxicity === 'mildly-toxic' ? 'Mildly toxic' : 'Toxic';
+---
+
+<div class="space-y-4">
+  <h3 class="text-sm font-semibold uppercase tracking-wider text-dark-text/40">Care Guide</h3>
+
+  <!-- Light -->
+  <div>
+    <div class="flex items-center justify-between text-sm mb-1">
+      <span class="text-dark-text/60 flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-sunlight" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        </svg>
+        Light
+      </span>
+      <span class="text-dark-text text-sm font-medium">{formatLight(light)}</span>
+    </div>
+    <div class="flex gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div class={`h-1.5 flex-1 rounded-full ${i < lightLevel ? 'bg-sunlight/60' : 'bg-dark-elevated'}`} />
+      ))}
+    </div>
+  </div>
+
+  <!-- Water -->
+  <div>
+    <div class="flex items-center justify-between text-sm mb-1">
+      <span class="text-dark-text/60 flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-water" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 0 0 9-9c0-3.97-5.05-9.12-7.66-11.39a1.98 1.98 0 0 0-2.68 0C8.05 2.88 3 8.03 3 12a9 9 0 0 0 9 9z" />
+        </svg>
+        Water
+      </span>
+      <span class="text-dark-text text-sm font-medium">{formatWater(water)}</span>
+    </div>
+    <div class="flex gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div class={`h-1.5 flex-1 rounded-full ${i < waterLevel ? 'bg-water/60' : 'bg-dark-elevated'}`} />
+      ))}
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Details -->
+  <div class="space-y-2.5 text-sm">
+    <div class="flex justify-between">
+      <span class="text-dark-text/60">Temperature</span>
+      <span class="text-dark-text font-medium">{temperature}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-dark-text/60">Humidity</span>
+      <span class="text-dark-text font-medium capitalize">{humidity}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-dark-text/60">Size</span>
+      <span class="text-dark-text font-medium">{matureHeight}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-dark-text/60">Growth</span>
+      <span class="text-dark-text font-medium capitalize">{growthRate}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-dark-text/60">Difficulty</span>
+      <span class="text-dark-text font-medium flex items-center gap-1">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <span class={`w-2 h-2 rounded-full ${i < (difficulty === 'advanced' ? 3 : difficulty === 'intermediate' ? 2 : 1) ? 'bg-dark-text/40' : 'bg-dark-text/15'}`} />
+        ))}
+        <span class="ml-1 capitalize">{difficulty}</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Safety -->
+  <div class="space-y-2">
+    <div class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${toxicityBg} ${toxicityColor}`}>
+      {toxicity === 'non-toxic' ? '✓' : '⚠'} {toxicityLabel}
+    </div>
+    <div class="flex flex-wrap gap-2">
+      {petSafe && (
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-safe/10 text-safe">
+          🐾 Pet safe
+        </span>
+      )}
+      {childSafe && (
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-safe/10 text-safe">
+          👶 Child safe
+        </span>
+      )}
+    </div>
+  </div>
+</div>
