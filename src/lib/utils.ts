@@ -44,6 +44,23 @@ export function getCategories(): Array<{ slug: string; name: string; description
 }
 
 /**
+ * Guide group icons — used on guide cards and section headers.
+ */
+const groupIcons: Record<string, string> = {
+  health: '💚',
+  life: '🏠',
+  practical: '🎯',
+  reference: '📖',
+};
+
+/**
+ * Get the emoji icon for a guide group.
+ */
+export function getGroupIcon(group?: string): string {
+  return (group && groupIcons[group]) ?? '📗';
+}
+
+/**
  * Capitalize the first letter of a string.
  */
 export function capitalize(str: string): string {

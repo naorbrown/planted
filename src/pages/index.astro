@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentCard from '../components/ui/ContentCard.astro';
-import { getCategories, url } from '../lib/utils';
+import { getCategories, getGroupIcon, url } from '../lib/utils';
 import { getCollection } from 'astro:content';
 
 const categories = getCategories();
@@ -9,6 +9,12 @@ const allPlants = await getCollection('plants', ({ data }) => !data.draft);
 const featuredPlants = allPlants.filter((p) => p.data.featured);
 const displayPlants = (featuredPlants.length >= 3 ? featuredPlants.slice(0, 6) : allPlants.slice(0, 6))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const allGuides = await getCollection('guides', ({ data }) => !data.draft && data.featured);
+const useCaseGuides = allGuides
+  .filter((g) => g.data.group && g.data.group !== 'reference')
+  .sort((a, b) => a.data.title.localeCompare(b.data.title))
+  .slice(0, 6);
 ---
 
 <PageLayout title="Planted" description="Find the perfect plant for any space — bedroom, office, kitchen, and beyond.">
@@ -21,17 +27,17 @@ const displayPlants = (featuredPlants.length >= 3 ? featuredPlants.slice(0, 6) :
           <span class="text-5xl">🌿</span>
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark-text leading-[1.15]">
-          The right plant for <span class="text-leaf-light">every space</span>
+          The right plant for <span class="text-leaf-light">what you need</span>
         </h1>
         <p class="text-lg sm:text-xl text-dark-text/70 mt-5 max-w-2xl mx-auto leading-relaxed">
-          Bedroom, office, kitchen, kids room, and beyond. Find plants that thrive where you live, backed by science and world health traditions.
+          Better sleep, cleaner air, a thriving kitchen herb garden. Tell us what you want to achieve and we'll match you with the right plants.
         </p>
         <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
-          <a href={url('/plants/')} class="inline-flex items-center px-6 py-3 bg-leaf text-white rounded-xl font-medium text-sm no-underline hover:bg-leaf-dark shadow-sm hover:shadow-md transition-all">
-            Browse Plants
+          <a href={url('/guides/')} class="inline-flex items-center px-6 py-3 bg-leaf text-white rounded-xl font-medium text-sm no-underline hover:bg-leaf-dark shadow-sm hover:shadow-md transition-all">
+            Find by Goal
           </a>
-          <a href={url('/categories/')} class="inline-flex items-center px-6 py-3 bg-dark-surface text-dark-text rounded-xl font-medium text-sm no-underline shadow-[var(--shadow-card)] hover:bg-dark-elevated transition-all">
-            Pick a Space
+          <a href={url('/plants/')} class="inline-flex items-center px-6 py-3 bg-dark-surface text-dark-text rounded-xl font-medium text-sm no-underline shadow-[var(--shadow-card)] hover:bg-dark-elevated transition-all">
+            Browse All Plants
           </a>
         </div>
       </div>
@@ -44,24 +50,24 @@ const displayPlants = (featuredPlants.length >= 3 ? featuredPlants.slice(0, 6) :
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-leaf/10 flex items-center justify-center mb-4">
-          <span class="text-2xl">🏠</span>
+          <span class="text-2xl">🎯</span>
         </div>
-        <h3 class="font-medium text-dark-text mb-1">Pick your space</h3>
-        <p class="text-sm text-dark-text/60">Bedroom? Office? Kitchen? Browse by where you want to grow.</p>
+        <h3 class="font-medium text-dark-text mb-1">Start with your goal</h3>
+        <p class="text-sm text-dark-text/60">Better sleep? Cleaner air? Herbs for cooking? Start with what you need.</p>
       </div>
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-sunlight/10 flex items-center justify-center mb-4">
           <span class="text-2xl">🌱</span>
         </div>
-        <h3 class="font-medium text-dark-text mb-1">Find your plant</h3>
-        <p class="text-sm text-dark-text/60">Each guide covers care, setup, health benefits, and where to find seeds.</p>
+        <h3 class="font-medium text-dark-text mb-1">Get matched</h3>
+        <p class="text-sm text-dark-text/60">Each guide recommends specific plants with care details and safety info.</p>
       </div>
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-terracotta/10 flex items-center justify-center mb-4">
           <span class="text-2xl">🪴</span>
         </div>
-        <h3 class="font-medium text-dark-text mb-1">Watch it grow</h3>
-        <p class="text-sm text-dark-text/60">Step-by-step setup and maintenance. From seed to thriving plant.</p>
+        <h3 class="font-medium text-dark-text mb-1">Set up and grow</h3>
+        <p class="text-sm text-dark-text/60">Placement tips, grouping advice, and maintenance for your specific setup.</p>
       </div>
     </div>
   </section>
@@ -103,6 +109,34 @@ const displayPlants = (featuredPlants.length >= 3 ? featuredPlants.slice(0, 6) :
       <a href={url('/about/')} class="text-sm text-leaf-light no-underline hover:text-leaf transition-colors">Read more about our approach &rarr;</a>
     </p>
   </section>
+
+  <!-- Find by Goal -->
+  {useCaseGuides.length > 0 && (
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-dark-text">What do you need?</h2>
+        <a href={url('/guides/')} class="text-sm font-medium text-leaf-light no-underline hover:text-leaf transition-colors">All guides &rarr;</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {useCaseGuides.map((guide) => (
+          <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">
+            <div class="p-4 sm:p-5">
+              <h3 class="text-base sm:text-lg font-medium text-dark-text line-clamp-2 group-hover:text-leaf-light transition-colors">
+                {guide.data.title}
+              </h3>
+              <p class="text-sm text-dark-text/60 mt-1.5 line-clamp-2">
+                {guide.data.description}
+              </p>
+              <div class="text-xs text-dark-text/40 mt-3 flex items-center gap-1.5">
+                <span>{getGroupIcon(guide.data.group)}</span>
+                <span>{guide.data.group === 'health' ? 'Health & Wellness' : guide.data.group === 'life' ? 'Life Situations' : guide.data.group === 'practical' ? 'Practical Goals' : 'Guide'}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   <!-- Browse by Category -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
