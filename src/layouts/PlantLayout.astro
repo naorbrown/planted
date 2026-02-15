@@ -85,7 +85,7 @@ const related = allPlants
   }));
 ---
 
-<PageLayout title={title} description={description}>
+<PageLayout title={title} description={description} ogType="article" ogImage={url('/og/plant.png')}>
   <article class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12" data-pagefind-body>
     <script type="application/ld+json" set:html={JSON.stringify(plantSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
