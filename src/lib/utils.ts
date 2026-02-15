@@ -64,6 +64,15 @@ export const groupLabels: Record<string, string> = {
   reference: 'Learn More',
 };
 
+export const groupDescriptions: Record<string, string> = {
+  wellbeing: 'Sleep better, breathe cleaner, stress less.',
+  spaces: 'The right plant for every room, light level, and square footage.',
+  lifestyle: 'For beginners, travelers, renters, and people who forget to water.',
+  safety: 'Safe plants for homes with children and animals.',
+  style: 'Plants chosen for how they look, and gifts that last.',
+  reference: 'How-to guides, troubleshooting, and the science behind it all.',
+};
+
 /**
  * Get the emoji icon for a guide group.
  */

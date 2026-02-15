@@ -17,7 +17,7 @@ export function generatePlantSchema(input: PlantSchemaInput) {
     url: input.url,
     publisher: {
       '@type': 'Organization',
-      name: 'Planted',
+      name: 'Plant Therapy',
     },
   };
 }

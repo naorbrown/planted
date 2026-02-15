@@ -5,7 +5,7 @@ import { describe, it, expect } from 'vitest';
 
 // Inline the functions to avoid Astro import.meta.env dependency in test context.
 function url(path: string): string {
-  return `/planted${path}`;
+  return `/plant-therapy${path}`;
 }
 
 const categories: Record<string, { name: string; description: string; icon: string; order: number }> = {
@@ -55,9 +55,9 @@ function formatWater(level: string): string {
 
 describe('url()', () => {
   it('prefixes path with base', () => {
-    expect(url('/')).toBe('/planted/');
-    expect(url('/plants/')).toBe('/planted/plants/');
-    expect(url('/categories/bedroom/')).toBe('/planted/categories/bedroom/');
+    expect(url('/')).toBe('/plant-therapy/');
+    expect(url('/plants/')).toBe('/plant-therapy/plants/');
+    expect(url('/categories/bedroom/')).toBe('/plant-therapy/categories/bedroom/');
   });
 });
 

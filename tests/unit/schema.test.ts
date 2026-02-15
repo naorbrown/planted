@@ -10,7 +10,7 @@ function generatePlantSchema(input: { name: string; scientificName: string; desc
     description: input.description,
     image: input.image,
     url: input.url,
-    publisher: { '@type': 'Organization', name: 'Planted' },
+    publisher: { '@type': 'Organization', name: 'Plant Therapy' },
   };
 }
 
@@ -42,7 +42,7 @@ describe('generatePlantSchema()', () => {
     expect(schema.alternateName).toBe('Lavandula angustifolia');
     expect(schema.description).toBe('A fragrant bedroom plant.');
     expect(schema.url).toContain('lavender');
-    expect(schema.publisher.name).toBe('Planted');
+    expect(schema.publisher.name).toBe('Plant Therapy');
   });
 
   it('includes image when provided', () => {
