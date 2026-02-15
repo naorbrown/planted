@@ -1,8 +1,8 @@
-# Planted
+# Plant Therapy
 
 Find the perfect plant for any space — bedroom, office, kitchen, and beyond.
 
-**Live site:** [naorbrown.github.io/planted](https://naorbrown.github.io/planted)
+**Live site:** [naorbrown.github.io/plant-therapy](https://naorbrown.github.io/plant-therapy)
 
 ## What is this?
 
@@ -44,7 +44,7 @@ src/
 ├── components/     # Astro components (global, plant, ui)
 ├── content/        # MDX content files
 │   ├── plants/     # 20 plants organized by category
-│   └── guides/     # 3 in-depth guides
+│   └── guides/     # 44 use-case guides
 ├── data/           # Category metadata (YAML)
 ├── layouts/        # Page layouts (Base, Page, Plant, Guide)
 ├── lib/            # Utilities and JSON-LD schema generators

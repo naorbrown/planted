@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { url, getGroupIcon, groupLabels } from '../../lib/utils';
+import { url, getGroupIcon, groupLabels, groupDescriptions } from '../../lib/utils';
 import { getCollection } from 'astro:content';
 
 const allGuides = await getCollection('guides', ({ data }) => !data.draft);
@@ -38,7 +38,8 @@ ungrouped.sort((a, b) => a.data.title.localeCompare(b.data.title));
       if (!guides || guides.length === 0) return null;
       return (
         <div class="mb-10">
-          <h2 class="text-lg font-semibold text-dark-text/80 mb-4"><span class="mr-2">{getGroupIcon(groupKey)}</span>{groupLabels[groupKey]}</h2>
+          <h2 class="text-lg font-semibold text-dark-text/80 mb-1"><span class="mr-2">{getGroupIcon(groupKey)}</span>{groupLabels[groupKey]}</h2>
+          <p class="text-sm text-dark-text/40 mb-4">{groupDescriptions[groupKey]}</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {guides.map((guide) => (
               <a href={url(`/guides/${guide.id}/`)} class="group block rounded-xl bg-dark-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 no-underline">

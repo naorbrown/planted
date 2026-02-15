@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://naorbrown.github.io',
-  base: '/planted',
+  base: '/plant-therapy',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
